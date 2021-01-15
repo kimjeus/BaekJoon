@@ -7,5 +7,5 @@ josephus.o : josephus.c
 main.o : main.c
 	gcc -c -o main.o main.c
 
-claen :
+clean :
 	rm *.o josephus_exe
