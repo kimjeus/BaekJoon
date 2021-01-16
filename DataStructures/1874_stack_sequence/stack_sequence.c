@@ -2,45 +2,36 @@
 
 bool judgeStackSequence(int *ptrSequence, int n)
 {
-	int maxLocation = 0;
+	int stackIndex = 0;
+	int resultIndex = 0;
+	int top = -1;
+	int curStack = 1;
 
 	for (int i = 0; i < n; i++) {
-		if (ptrSequence[i] == n) {
-			maxLocation = i;
+		//stack 비어있음
+		if (top == -1) {
+			arrStack[++top] = curStack++;
+			arrResult[resultIndex++] = '+';
 		}
-	}
-
-	for (int i = 0; i < maxLocation; i++) {
-		if (ptrSequence[i] > ptrSequence[i + 1] + 1) {
+		//stack 값이 같아질 때까지 push
+		while (arrStack[top] < ptrSequence[i]) {
+			arrStack[++top] = curStack++;
+			arrResult[resultIndex++] = '+';
+		}
+		//stack 값과 같으면 pop
+		if (arrStack[top] == ptrSequence[i]) {
+			arrStack[top--] = 0;
+			arrResult[resultIndex++] = '-';
+		}
+		//stack 값보다 크면 불가능 수열
+		else {
 			return false;
 		}
 	}
 
-	for (int i = maxLocation + 1; i < n; i++) {
-		if (ptrSequence[i] >= ptrSequence[i - 1]) {
-			return false;
-		}
+	for (int i = 0; i < 2 * n; i++) {
+		printf("%c\n", arrResult[i]);
 	}
 
 	return true;
-}
-
-void makeStackSequence(int *ptrSequence, int n)
-{
-	int topValue = 0, popCount = 0;
-
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j <= ptrSequence[i]; j++) {
-			if (topValue + popCount < ptrSequence[i]) {
-				topValue++;
-				printf("+\n");
-			}
-			else {
-				topValue--;
-				popCount++;
-				printf("-\n");
-				break;
-			}
-		}
-	}
 }

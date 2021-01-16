@@ -12,11 +12,11 @@ int main(void)
 	for (int i = 0; i < n; i++) {
 		scanf("%d", &ptrSequence[i]);
 	}
-
-	if (judgeStackSequence(ptrSequence, n)) {
-		makeStackSequence(ptrSequence, n);
+	for (int i = 0; i < 100000; i++) {
+		arrStack[i] = 0;
 	}
-	else {
+
+	if (!judgeStackSequence(ptrSequence, n)) {
 		printf("NO\n");
 	}
 
