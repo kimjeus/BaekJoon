@@ -18,7 +18,6 @@ void isPush(int pushValue)
 
 void isVisitQueue(void)
 {
-	for (int i = 0; i < 
 }
 
 void pushVisitLinked(int **ptrArrNetLink)
