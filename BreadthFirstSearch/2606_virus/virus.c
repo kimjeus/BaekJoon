@@ -1,35 +1,27 @@
 #include "virus.h"
 
-void isPush(int pushValue)
+int doBFS(int start)
 {
 	int front = struQueue.front;
 	int back = struQueue.back;
 
-	if (front == -1) {
-		front++;
-	}
-	struQueue.ArrQueue[++back] = pushValue;
+	ptrVisit[start - 1] = true;	//start 컴퓨터 visit check
+	struQueue.mPtrQueue[back] = start;	//visit computer queue 삽입
+	front++;
+	back++;
 
-	struQueue.front = front;
-	struQueue.back = back;
-
-	return;
-}
-
-void isVisitQueue(void)
-{
-}
-
-void pushVisitLinked(int **ptrArrNetLink)
-{
-	for (int i = 0; i < netLinkCount; i++) {
-		for (int j = 0; j < 2; j++) {
-			if (struVisit.mPtrVisit[struVisit.top] == ptrArrNetLink[i][j]) {
-				if (struVisit
+	while (front < back) {	//queue의 마지막에 도달할 때까지
+		int frontValue = struQueue.mPtrQueue[front];
+		
+		//graph에서 queue의 front computer에 연결된 computer search
+		for (int i = 0; i < computerCount; i++) {
+			if (ppInputGraph[i][frontValue - 1] && !ptrVisit[i]) {
+				ptrVisit[i] = true;	//search된 computer visit check
+				struQueue.mPtrQueue[back++] = i + 1;	//visit computer queue 삽입
 			}
 		}
+		front++;
 	}
-	for (int i = 0; i < _msize(ptrVisit) / sizeof(int); i++) {
-		s
-	}
+
+	return front - 1;	//감염된 computer 개수 front에서 초기 감염 컴퓨터 1개 빼줌
 }

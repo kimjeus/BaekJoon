@@ -1,23 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h> //malloc, free
-#include <string.h>	//strlen
-
-#define MAX_QUEUE_SIZE 100
+#include <stdbool.h>
 
 typedef struct _SQueue {
-	int mArrQueue[MAX_QUEUE_SIZE];
+	int *mPtrQueue;
 	int front;
 	int back;
 } SQueue;
 SQueue struQueue;
 
-typedef struct _SVisit {
-	int *mPtrVisit;
-	int top;
-} SVisit;
-SVisit struVisit;
+bool *ptrVisit;
+bool **ppInputGraph;
+int computerCount, inputCount;
 
-int computerCount = 0;
-int netLinkCount = 0;
-
-void isPush(SQueue *, int);
+int doBFS(int);
