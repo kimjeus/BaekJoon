@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>	//malloc, free
 #include <stdbool.h>
 
 #define MAX_ROW_SIZE 100
@@ -23,3 +22,6 @@ int dArrDistance[MAX_ROW_SIZE][MAX_ROW_SIZE];
 int N, M;
 
 int searchMazeBFS(int, int);
+bool isRightDistance(int, int);
+void doRightDistance(int, int, int);
+void pushQueue(int, int, int);
