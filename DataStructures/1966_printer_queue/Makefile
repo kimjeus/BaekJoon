@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall
+CFLAGS = -W -Wall
 TARGET = printer_queue_exe
 OBJS = printer_queue.o main.o
 
