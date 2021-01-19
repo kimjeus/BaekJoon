@@ -1,50 +1,21 @@
 #include "tree_diameter.h"
 
-  /* 
-void dfs_1 (SDepth *struDepth)
-{
-	
-#if DEBUG
-	//input SDepth 점검
-	printf("dfs_1 input SDepth\n");
-	printf("parentNode: %d, childNode: %d, depth: %d\n\n", struDepth->mParentNode, struDepth->mChildNode, struDepth->mDepth);
-#endif	
-	 
-	SDepth tempDepth;
-	initSDepth(&tempDepth);
-
-	//childNode의 child 개수만큼 반복
-	if (countChildNode(struDepth->mChildNode) != 0) {
-		//childNode의 child를 찾아서 순서대로 재귀함수 호출
-		for (int j = 0; j < nodeNum - 1; j++) {
-			if (ptrArrInputTree[0][j] == struDepth->mChildNode) {
-				inputSDepth(&tempDepth, struDepth->mParentNode, ptrArrInputTree[1][j], struDepth->mDepth + ptrArrInputTree[2][j]);
-				
-#if DEBUG
-				//다음 재귀 함수 입력 값 확인
-				printf("next function input\n");
-				printf("parentNode: %d, childNode: %d, depth: %d\n\n", tempDepth.mParentNode, tempDepth.mChildNode, tempDepth.mDepth);
-#endif
-				 
-				dfs_1 (&tempDepth);
-			}
-		}
-	}
-	else {
-		printf("저장: parent: %d, child: %d, depth: %d\n", struDepth->mParentNode, struDepth->mChildNode, struDepth->mDepth);
-		temp[xRow][xColumn++] = struDepth->mDepth;
-		return;
-	}
-	return;
-}
-*/
 void doDFS(int inputNum, int length)
 {
 	checkVisit(inputNum, length);	//visit 구조체 배열에 방문 여부와 최초 재귀 함수 입력값으로부터의 거리 입력
 	
+	//visit해서 최초 함수 입력값으로부터의 거리를 입력 받은 노드는 방문을 안하고
+	//방문 안한 노드는 방문해서 거리 입력하기
 	for (int i = 0; i < nodeNum - 1; i++) {
-		if (inputNum == arrInputTree[i].mParentNum) {	//재귀 함수 입력값과 inputTree에서 parentNum값이 일치하는 tree 지점 탐색
+		//재귀 함수 입력값과 inputTree의 paretNum값이 일치하고
+		//visit하지 않았을 경우에 방문 체크 및 거리 저장하면서 재귀 호출
+		if (inputNum == arrInputTree[i].mParentNum && !arrStruVisit[arrInputTree[i].mChildNum - 1].mVisit) {
 			doDFS(arrInputTree[i].mChildNum, length + arrInputTree[i].mLength);
+		}
+		//재귀 함수 입력값과 inputTree의 childNum값이 일치하고
+		//visit하지 않았을 경우에 방문 체크 및 거리 저장하면서 재귀 호출
+		else if (inputNum == arrInputTree[i].mChildNum && !arrStruVisit[arrInputTree[i].mParentNum - 1].mVisit) {
+			doDFS(arrInputTree[i].mParentNum, length + arrInputTree[i].mLength);
 		}
 	}
 	return;
@@ -56,20 +27,6 @@ void checkVisit(int inputNum, int sumLength)
 	arrStruVisit[inputNum - 1].mLength = sumLength; 
 
 	return;
-}
-
-SNode findFarthestNum()
-{
-	SNode
-	 farthestNum = 0;
-
-	for (int i = 0; i < nodeNum; i++) {
-		if (farthestNum < arrStruVisit[i].mLength) {
-			farthestNum = arrStruVisit[i].mLength;
-		}
-	}
-
-	return farthestNum;
 }
 
 void initSNode(SNode *struNode)
@@ -105,4 +62,19 @@ void initArrStruVisit(void)
 	}
 
 	return;
+}
+
+int findFarthestNode()
+{
+	int farthestNum = 0;
+	int farthestNode = 0;
+
+	for (int i = 0; i < nodeNum; i++) {
+		if (farthestNum < arrStruVisit[i].mLength) {
+			farthestNum = arrStruVisit[i].mLength;
+			farthestNode = i;
+		}
+	}
+
+	return farthestNode + 1;	//arrStruVisit배열은 0부터 시작하는데 노드는 1부터 시작하므로 + 1
 }

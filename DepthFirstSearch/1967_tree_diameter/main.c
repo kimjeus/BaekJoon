@@ -22,7 +22,7 @@ int main(void)
 	}
 #endif
 
-	doDFS(1, 0);
+	doDFS(1, 0);	//최초 시작 노드 1, 최초 노드로부터의 거리 0 입력
 
 #if DEBUG
 	//arrStruVisit 결과 점검
@@ -31,7 +31,20 @@ int main(void)
 	}
 #endif
 
-	doDFS(
+	int farthestNum = findFarthestNode();
+	initArrStruVisit();
+	doDFS(farthestNum, 0);
+
+#if DEBUG
+	//arrStruVisit 결과 점검
+	for (int i = 0; i < nodeNum; i++) {
+		printf("%d: visit: %d, distance: %d\n", i, arrStruVisit[i].mVisit, arrStruVisit[i].mLength);
+	}
+#endif
+
+	farthestNum = findFarthestNode();
+
+	printf("%d\n", arrStruVisit[farthestNum - 1].mLength);
 
 	return 0;
 }
