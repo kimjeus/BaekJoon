@@ -11,28 +11,20 @@ typedef struct _SNode {
 	int mLength;
 } SNode;
 
-typedef struct _SDepth {
-	int mParentNode;
-	int mChildNode;
-	int mDepth;
-} SDepth;
+typedef struct _SVisit {
+	bool mVisit;
+	int mLength;
+} SVisit;
 
-SNode arrInputTree[MAX_NODE_NUM];
+SNode arrInputTree[MAX_NODE_NUM - 1];
+SVisit arrStruVisit[MAX_NODE_NUM];
 
 int nodeNum;
-int *ptrArrInputTree[3];
-int temp[3][30];
-int result[30];
-int k;
-int xRow;
-int xColumn;
 
 void initSNode(SNode *);	//parent node, child node, length 포함한 SNode 초기화
 void initInputTree(void);	//input tree 초기화
-
-void findPartOfDiameterDFS(int);
-void initSDepth(SDepth *);	//SDepth 값 0으로 초기화
-void inputSDepth(SDepth *, int, int, int);	//SDepth에 input 값으로 이루어진 depth까지 저장
-int countChildNode(int);
-void dfs_1(SDepth *);
-void dfs_2(int);
+void initSVisit(SVisit *);	//visit여부 입력값과의 length 포함한 SVisit 초기화
+void initArrStruVisit(void);	//SVisit 구조체 배열 초기화
+void doDFS(int, int);
+void checkVisit(int, int);
+int findFarthestNum();

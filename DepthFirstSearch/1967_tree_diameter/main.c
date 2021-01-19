@@ -8,40 +8,30 @@ int main(void)
 
 	//arrInputTree 입력 받음
 	for (int i = 0; i < nodeNum - 1; i ++) {
-		scanf("%d", &arrInputTree[i]->mParentNode);
-		scanf("%d", &arrInputTree[i]->mChildNode);
-		scanf("%d", &arrInputTree[i]->mDepth);
+		scanf("%d", &arrInputTree[i].mParentNum);
+		scanf("%d", &arrInputTree[i].mChildNum);
+		scanf("%d", &arrInputTree[i].mLength);
 	}
-/*
+
 #if DEBUG
 	//arrInputTree 입력 점검
 	for (int i = 0; i < nodeNum - 1; i++) {
-		for (int j = 0; j < 3; j++) {
-			printf("%d ", arrInputTree[i]->mParentNode);
-			printf("%d", arrInputTree[i]
-		}
-		printf("\n");
+		printf("%d ", arrInputTree[i].mParentNum);
+		printf("%d ", arrInputTree[i].mChildNum);
+		printf("%d\n", arrInputTree[i].mLength);
 	}
 #endif
-*/
-/*
-	SDepth tempDepth;
-	initSDepth(&tempDepth);
-	inputSDepth(&tempDepth, 3, 6, 9);
-	dfs_1(&tempDepth);
-*/
-	dfs_2(1);
 
-	for (int i = 0; i < 3; i++) {
-		for (int j = 0; j < 30; j++) {
-			printf("%d ", temp[i][j]);
-		}
-		printf("\n");
+	doDFS(1, 0);
+
+#if DEBUG
+	//arrStruVisit 결과 점검
+	for (int i = 0; i < nodeNum; i++) {
+		printf("%d: visit: %d, distance: %d\n", i, arrStruVisit[i].mVisit, arrStruVisit[i].mLength);
 	}
-	//ptrArrInputTree 메모리 해제
-	for (int i = 0; i < 3; i++) {
-		free(ptrArrInputTree[i]);
-	}
+#endif
+
+	doDFS(
 
 	return 0;
 }
