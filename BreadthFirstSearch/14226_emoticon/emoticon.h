@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <stdbool.h>
 
-#define DEBUG 1
-#define MAX_QUEUE_SIZE 1000
+#define DEBUG 0
+#define MAX_QUEUE_SIZE 16000
+#define MAX_INPUT_SIZE 1000
 
 typedef struct _Node {
 	int mScreen;
@@ -18,7 +19,7 @@ typedef struct _Queue {
 } Queue;
 Queue queue;
 
-bool visited[MAX_QUEUE_SIZE + 2][MAX_QUEUE_SIZE + 2];
+bool visited[MAX_INPUT_SIZE + 2][MAX_INPUT_SIZE + 2];
 
 void BFS(Node);
 void subNode(Node *, Node);
