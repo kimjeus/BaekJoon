@@ -7,82 +7,61 @@ void BFS(Node inputNode)
 
 	queue.front++;
 	queue.back++;
-	push(inputNode);
+	push(inputNode);	//인자로 들어온 node push
 	while (!empty()) {
-		inputNode = queue.arrQueue[queue.front];
-		/*
-		init x = 0;
-		for (x = 2; x < MAX_QUEUE_SIZE + 1; x++) {
-			if (visited[startNode.mScreen][x] == 0) {
-				break;
-			}
-			else
-				continue;
-		}
-		if (x == MAX_QUEUE_SIZE + 1) {
-			return;
-		}
-	*/	
-#if DEBUG
-		printf("\n");
-		printNode(inputNode);
-#endif
-		subNode(&tempNode, inputNode);
+		inputNode = queue.arrQueue[queue.front];	//queue의 front에 있는 node값 가져옴
+		tempNode = inputNode;	//inputNode 값 변경하기 전에 tempNode에 저장
+
+		//화면에 있는 이모티콘 하나를 삭제하는 경우
+		//화면에 이모티콘이 2개도 안되면 경우의 수를 따질 필요가 없고 &&
+		//화면의 이모티콘 개수, 클립보드에 저장된 이모티콘 개수 조합이 동일한 곳을 탐색한 적이 없을 때 실행
 		if (inputNode.mScreen - 1 >= 2 && !visited[inputNode.mScreen - 1][inputNode.mClipBoard]) {
-#if DEBUG
-			printf("-1\n");
-#endif
-			inputNode.mScreen--;
-			inputNode.mSecond++;
-			queue.back++;
-			push(inputNode);
-			visited[inputNode.mScreen][inputNode.mClipBoard] = true;
+			inputNode.mScreen--;	//화면 이모티콘 개수 한개 감소
+			inputNode.mSecond++;	//1초 증가
+			queue.back++;			//queue에 push하기 전 back 1 증가
+			push(inputNode);		//queue에 화면 이모티콘 한 개 감소한 경우 push
+			visited[inputNode.mScreen][inputNode.mClipBoard] = true;	//화면 이모티콘 한 개 감소하고, 클립보드에 저장된 이모티콘 개수는 그대로인 경우의 수 방문 체크
+			
+			//최종 화면 이모티콘 개수와 동일하면 BFS 함수 return
 			if (inputNode.mScreen == startNode.mScreen) {
 				return;
 			}
 		}
 
-		subNode(&inputNode, tempNode);
+		inputNode = tempNode;	//위에서 inputNode 값이 변경되었으므로 변경 전 값으로 다시 저장
+
+		//클립보드에 저장된 이모티콘 개수가 화면에 있는 이모티콘 개수와 다를 때 클립보드 갱신 && inputNode의 화면 이모티콘 개수를 클립보드에 갱신했을 때를 방문했었는지 체크
 		if (inputNode.mScreen != inputNode.mClipBoard && !visited[inputNode.mScreen][inputNode.mScreen]) {
-#if DEBUG
-			printf("복사\n");
-#endif
-			inputNode.mClipBoard = inputNode.mScreen;
-			inputNode.mSecond++;
-			queue.back++;
-			push(inputNode);
-			visited[inputNode.mScreen][inputNode.mScreen] = true;
+			inputNode.mClipBoard = inputNode.mScreen;	//클립보드 이모티콘 개수 갱신
+			inputNode.mSecond++;	//1초 증가
+			queue.back++;			//queue에 push하기 전 back 1 증가
+			push(inputNode);		//queue에 클립보드 개수 갱신한 경우 push
+			visited[inputNode.mScreen][inputNode.mScreen] = true;	//클립보드 이모티콘 개수와 현재 화면 개수와 동일한 경우 방문 체크
+/*
+			//최종 화면 이모티콘 개수와 동일하면 BFS 함수 return
 			if (inputNode.mScreen == startNode.mScreen) {
 				return;
 			}
+			*/
 		}
 
-		subNode(&inputNode, tempNode);
+		inputNode = tempNode;	//위에서 inputNode 값이 변경되었으므로 변경 전 값으로 다시 저장
+		//클립보드에 저장된 이모티콘 개수만큼 화면에 추가했을 때 화면에 출력 가능한 최대 이모티콘 개수보다 적은 경우 &&
+		//방문한적 있는지 체크
 		if (inputNode.mScreen + inputNode.mClipBoard <= MAX_INPUT_SIZE && inputNode.mClipBoard > 0 && !visited[inputNode.mScreen + inputNode.mClipBoard][inputNode.mClipBoard]) {
-#if DEBUG
-			printf("출력\n");
-#endif
-			inputNode.mScreen += inputNode.mClipBoard;
-			inputNode.mSecond++;
-			queue.back++;
-			push(inputNode);
-			visited[inputNode.mScreen][inputNode.mClipBoard] = true;
+			inputNode.mScreen += inputNode.mClipBoard;	//화면 이모티콘 개수 + 클립보드 이모티콘 개수로 갱신
+			inputNode.mSecond++;	//1초 증가
+			queue.back++;			//queue에 push하기 전 back 1 증가
+			push(inputNode);		//queue에 클립보드 개수 갱신한 경우 push
+			visited[inputNode.mScreen][inputNode.mClipBoard] = true;	//바뀐 경우 방문했다고 체크해줌.
+			//최종 화면 이모티콘 개수와 동일하면 BFS 함수 return
 			if (inputNode.mScreen == startNode.mScreen) {
 				return;
 			}
 		}
-		queue.front++;
-		//BFS(queue.arrQueue[queue.front]);
+		queue.front++;	//queue의 front 증가
 	}
 
-	return;
-}
-
-void subNode(Node *tempNode, Node inputNode)
-{
-	tempNode->mScreen = inputNode.mScreen;
-	tempNode->mClipBoard = inputNode.mClipBoard;
-	tempNode->mSecond = inputNode.mSecond;
 	return;
 }
 
@@ -97,7 +76,7 @@ bool empty(void)
 }
 void push(Node inputNode)
 {
-	subNode(&queue.arrQueue[queue.back], inputNode);
+	queue.arrQueue[queue.back] = inputNode;
 #if DEBUG
 	printf("push\t");
 	printNode(inputNode);

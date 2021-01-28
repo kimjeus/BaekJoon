@@ -19,10 +19,10 @@ typedef struct _Queue {
 } Queue;
 Queue queue;
 
+//노드의 [screen에 출력된 이모티콘 개수][clipboard에 저장된 이모티콘 개수]로 노드의 방문 여부 체크
 bool visited[MAX_INPUT_SIZE + 2][MAX_INPUT_SIZE + 2];
 
-void BFS(Node);
-void subNode(Node *, Node);
+void BFS(Node);	//queue의 front 노드에 대해서 화면의 이모티콘 삭제 or 클립보드에 현재 화면의 이모티콘 개수 복사 or 클립보드에 있는 이모티콘을 화면에 복사 붙여넣기를 BreadthFirstSearch 알고리즘 방식을 탐색
 void push(Node);
 bool empty(void);
 void initNode(Node *);
