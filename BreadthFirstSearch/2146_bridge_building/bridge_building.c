@@ -1,5 +1,6 @@
 #include "bridge_building.h"
 
+//모든 섬에 2, 3, 4, ... 순서로 번호 부여하는 함수
 void giveIslandNumBFS(int xPos, int yPos, int islandNum)
 {
 	initQueue();	//queue 초기화
@@ -37,6 +38,36 @@ void giveIslandNumBFS(int xPos, int yPos, int islandNum)
 	return;
 }
 
+//바다와 연결된 모든 섬 좌표와 섬 번호를 arrSideLand 에 저장
+void sideLand(void)
+{
+	for (int i = 0; i < mapSize * mapSize; i++) {
+		arrSideLand[i].xPos = -1;
+		arrSideLand[i].yPos = -1;
+		arrSideLand[i].length = 0;
+	}
+	for (int i = 0; i < mapSize; i++) {
+		for (int j = 0; j < mapSize; j++) {
+			//섬 번호가 2 이상으로 부여 받고 && 옆에 바다가 있는 좌표라면 배열에 저장
+			if (graph[i][j].islandNum > 1 && graph[i][j].side) {
+				arrSideLand[count].xPos = i;
+				arrSideLand[count].yPos = j;
+				arrSideLand[count].length = graph[i][j].islandNum;
+				count++;
+			}
+		}
+	}
+#if DEBUG
+	printf("sideLand\n");
+	for (int i = 0; i < count; i++) {
+		printf("%d %d\t%d\n", arrSideLand[i].xPos, arrSideLand[i].yPos, arrSideLand[i].length);
+	}
+#endif
+	return;
+}
+
+//섬 번호가 다른 두 좌표 사이의 최단 거리를 계산해서 return 하는 함수
+//경로가 없으면 return -1
 int minRouteBFS(int startX, int startY, int endX, int endY)
 {
 	push(startX, startY, 0);	//출발 좌표 queue에 삽입
@@ -92,6 +123,7 @@ int minRouteBFS(int startX, int startY, int endX, int endY)
 	return -1;
 }
 
+//바다와 붙어 있는 육지에는 side 변수에 true 저장
 void checkSide(void)
 {
 	for (int i = 0; i < mapSize; i++) {
@@ -116,32 +148,7 @@ void checkSide(void)
 	}
 	return;
 }
-void sideLand(void)
-{
-	for (int i = 0; i < mapSize * mapSize; i++) {
-		arrSideLand[i].xPos = -1;
-		arrSideLand[i].yPos = -1;
-		arrSideLand[i].length = 0;
-	}
-	for (int i = 0; i < mapSize; i++) {
-		for (int j = 0; j < mapSize; j++) {
-			//섬 번호가 2 이상으로 부여 받고 && 옆에 바다가 있는 좌표라면 배열에 저장
-			if (graph[i][j].islandNum > 1 && graph[i][j].side) {
-				arrSideLand[count].xPos = i;
-				arrSideLand[count].yPos = j;
-				arrSideLand[count].length = graph[i][j].islandNum;
-				count++;
-			}
-		}
-	}
-#if DEBUG
-	printf("sideLand\n");
-	for (int i = 0; i < count; i++) {
-		printf("%d %d\t%d\n", arrSideLand[i].xPos, arrSideLand[i].yPos, arrSideLand[i].length);
-	}
-#endif
-	return;
-}
+
 void push(int xPos, int yPos, int length)
 {
 	queue.back++;	//queue의 back 증가
