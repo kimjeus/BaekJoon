@@ -22,19 +22,14 @@ void countArea(void)
 
 	for (int i = 0; i < N; i++) {
 		for (int j = 0; j < N; j++) {
-#if DEBUG
-			printSink();
-#endif
 			//현재 땅이 잠겨있지 않고 && 방문한 적이 없으면 안전한 영역 count한다
 			if (!arrInput[i][j].sink && !arrInput[i][j].visit) {
 				count++;
 				visit(i, j);
-#if DEBUG
-				printVisit();
-#endif
 			}
 		}
 	}
+	//최대 영역 개수 갱신
 	if (count > resultCount) {
 		resultCount = count;
 	}
