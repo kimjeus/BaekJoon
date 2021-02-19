@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#define DEBUG 1
+#define DEBUG 0
 #define INF 200001
 
 typedef struct _node {

@@ -30,8 +30,8 @@ void renewResult(int V, int K, int minIdx)
 
 	for (int i = 1; i <= V; i++) {
 		tempa = searchList(K, minIdx);
-		if (tempa > 0) {
-			tempb = searchList(minIdx, i);
+		tempb = searchList(minIdx, i);
+		if (tempa >=0 && tempb >= 0) {
 			if (result[i] > tempa + tempb)
 				result[i] = tempa + tempb;
 		}
@@ -41,16 +41,18 @@ void renewResult(int V, int K, int minIdx)
 
 char searchList(int i, int minIdx)
 {
-	node *temp = (node *)malloc(sizeof(node));
+	if (i == minIdx)
+		return 0;
+	node *tmp = (node *)malloc(sizeof(node));
 
-	temp = &graph[i];
+	tmp = &graph[i];
 	while (1) {
-		if (temp->vertex == minIdx)
-			return temp->weight;
-		else if (temp->next == NULL)
+		if (tmp->vertex == minIdx)
+			return tmp->weight;
+		else if (tmp->next == NULL)
 			return -1;
 		else
-			temp = temp->next;
+			tmp = tmp->next;
 	}
 }
 
@@ -81,12 +83,12 @@ void initResult(int V)
 	}
 	return;
 }
-void print(node *temp)
+void print(node *tmp)
 {
-	printf("%d : %d\t", temp->vertex, temp->weight);
-	while (temp->next != NULL) {
-		temp = temp->next;
-		printf("%d : %d\t", temp->vertex, temp->weight);
+	printf("%d : %d\t", tmp->vertex, tmp->weight);
+	while (tmp->next != NULL) {
+		tmp = tmp->next;
+		printf("%d : %d\t", tmp->vertex, tmp->weight);
 	}
 	printf("\n");
 	return;

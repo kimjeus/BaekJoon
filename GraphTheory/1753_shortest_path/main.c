@@ -31,6 +31,8 @@ int main(void)
 	initResult(V);
 
 	for (int i = 0; i < E; i++) {
+		node *temp = (node *)malloc(sizeof(node));
+
 		scanf("%d %d %d", &start, &end, &weight);
 //		graph[start][end] = weight;
 		cur = &graph[start];
@@ -38,10 +40,11 @@ int main(void)
 			bf = cur;
 			cur = cur->next;
 		}
-		cur->weight = weight;
-		cur->vertex = end;
+		temp->weight = weight;
+		temp->vertex = end;
+		bf = cur;
+		cur = temp;
 		bf->next = cur;
-		printf("bf: %d %d\tcur: %d %d\n", bf->vertex, bf->weight, cur->vertex, cur->weight);
 #if DEBUG
 		printf("start:%d ", start);
 		print(&graph[start]);
@@ -58,6 +61,13 @@ int main(void)
 #endif
 */
 	renewResult(V, K, K);
+#if DEBUG
+		printf("%d :: ", K);
+		for (int j = 1; j <= V; j++) {
+			printf("%d:%d\t", j, result[j]);
+		}
+		printf("\n");
+#endif
 	for (int i = 1; i < V; i++) {
 		findMin(V, &minIdx);
 		renewResult(V, K, minIdx);
