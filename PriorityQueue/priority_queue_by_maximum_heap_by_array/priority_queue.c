@@ -1,10 +1,10 @@
 #include "priority_queue.h"
 
-void initPriQueue(priQueue *pQu)
+void initPQ(priority_queue *pq)
 {
-	for (int i = 0; i < MAX_QUEUE_SIZE; i++)
-		initData(&pQu->mem[i]);
-	pQu->back = 0;
+	for (int i = 0; i < MAX_PQ_SIZE; i++)
+		initData(&pq->mem[i]);
+	pq->back = 0;
 }
 void initData(Data *data)
 {
@@ -13,63 +13,59 @@ void initData(Data *data)
 	data->pri = 0;
 	return;
 }
-bool empty(priQueue *pQu)
+bool empty(priority_queue *pq)
 {
-	if (!pQu->back) { return true; }
+	if (!pq->back) { return true; }
 	else { return false; }
 }
-void pop(priQueue *pQu)
+void pop(priority_queue *pq)
 {
-	if (!empty(pQu)) {
-		pQu->mem[1] = pQu->mem[pQu->back];	//마지막 노드 루트로  이동
-		initData(&pQu->mem[pQu->back--]);		//마지막 노드 pop
+	if (empty(pq)) { return; }
+	pq->mem[1] = pq->mem[pq->back];	//마지막 노드 루트로 이동
+	initData(&pq->mem[pq->back--]);	//마지막 노드 pop
+	if (empty(pq)) { return; }
 
-		int curSize = (int)size(pQu);
-		int parent = 1;
-		int child = 2;
+	int curSize = (int)size(pq);
+	int parent = 1;
+	int child = parent * 2;
 
-		while (child <= curSize) {
-			if (child + 1 <= curSize && pQu->mem[child].pri < pQu->mem[child + 1].pri)	//두 자식 중 우선순위가 높은 child 선택
-				child++;
-			if (pQu->mem[parent].pri < pQu->mem[child].pri)	{	//자식의 우선순위가 높으면 부모와 변경
-				swapData(&pQu->mem[parent], &pQu->mem[child]);
-				parent = child;
-				child = parent * 2;
-			}
-			else
-				break;
+	while (child <= curSize) {
+		if (child + 1 <= curSize && pq->mem[child].pri < pq->mem[child + 1].pri) { child++; }	//두 자식 중 우선순위가 높은 child 선택
+
+		if (pq->mem[parent].pri < pq->mem[child].pri)	{	//자식의 우선순위가 높으면 부모와 변경
+			swapData(&pq->mem[parent], &pq->mem[child]);
+			parent = child;
+			child = parent * 2;
 		}
+		else { break; }
 	}
 	return;
 }
-void push(priQueue *pQu, Data data)
+void push(priority_queue *pq, Data data)
 {
-	pQu->mem[++pQu->back] = data;
-	if (!empty(pQu)) {
-		int child = pQu->back;
-		int parent = child / 2;
+	pq->mem[++pq->back] = data;
+	if ((int)size(pq) == 1) { return; }
 
-		while (child != 1) {	//부모가 없을 때까지 반복
-			if (pQu->mem[parent].pri < pQu->mem[child].pri) {
-				swapData(&pQu->mem[parent], &pQu->mem[child]);
-				child = parent;
-				parent = child / 2;
-			}
-			else
-				break;
+	int child = pq->back;
+	int parent = child / 2;
+
+	while (child != 1) {	//부모가 없을 때까지 반복
+		if (pq->mem[parent].pri < pq->mem[child].pri) {
+			swapData(&pq->mem[parent], &pq->mem[child]);
+			child = parent;
+			parent = child / 2;
 		}
+		else { break; }
 	}
 	return;
 }
-size_t size(priQueue *pQu) { return (size_t)pQu->back; }
-Data top(priQueue *pQu) { return pQu->mem[1]; }
+size_t size(priority_queue *pq) { return (size_t)pq->back; }
+Data top(priority_queue *pq) { return pq->mem[1]; }
 void swapData(Data *pData, Data *cData)
 {
 	Data tmpData;
-	
 	tmpData = *pData;
 	*pData = *cData;
 	*cData = tmpData;
-
 	return;
 }
