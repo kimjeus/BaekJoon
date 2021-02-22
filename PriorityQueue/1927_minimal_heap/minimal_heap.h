@@ -1,33 +1,22 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdbool.h>
 
 #define DEBUG 0
-#define MAX_PQ_SIZE 100000
-
-typedef struct _TreeNode {
-	int value;
-	Node left;
-	Node right;
-} TreeNode;
+#define MAX_PQ_SIZE 100001
 
 typedef struct _priority_queue {
-	bool (*empty)(void);
-	void (*pop)(void);
-	void (*push)(unsigned int);
-	size_t (*size)(void);
-	int (*top)(void);
-	
-	TreeNode *rootNode;
-	int mTop;
-	int mFront;
-	int mBack;
-	int mSize;
+	int mem[MAX_PQ_SIZE];
+	int back;
 } priority_queue;
-priority_queue pq;
 
-void initPQ(void);
-bool empty(void);
-void pop(void);
-void push(unsigned int);
-size_t size(void);
-int top(void);
+void initPQ(priority_queue *);
+bool empty(priority_queue *);
+void pop(priority_queue *);
+void push(priority_queue *, int);
+size_t size(priority_queue *);
+int top(priority_queue *);
+#if DEBUG
+void printPQ(priority_queue *);
+#endif
+
