@@ -7,9 +7,9 @@ void addition(char *, char *, char *);
 
 int main(void)
 {
-    char *a = (char *)calloc(10002, sizeof(char));
-    char *b = (char *)calloc(10002, sizeof(char));
-    char *tmp = (char *)calloc(10003, sizeof(char));
+    char *a = (char *)calloc(10001, sizeof(char));
+    char *b = (char *)calloc(10001, sizeof(char));
+    char *tmp = (char *)calloc(10002, sizeof(char));
 
     scanf("%s %s", a, b);
     (strlen(a) > strlen(b)) ? addition(a, b, tmp) : addition(b, a, tmp);
